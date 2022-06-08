@@ -1,0 +1,21 @@
+from django.contrib import admin
+
+# Register your models here.
+from .models import Csw
+from .models import Work_contact
+from .models import  education_and_training
+from .models import pst_five_work
+from .models import character_ref
+from .models import practise_outside
+from .models import rivate_practice
+from .models import Customer
+
+admin.site.register(Csw)
+admin.site.register(Work_contact)
+admin.site.register( education_and_training)
+admin.site.register(pst_five_work)
+admin.site.register(character_ref)
+admin.site.register(practise_outside)
+admin.site.register(rivate_practice)
+admin.site.register(Customer)
+
