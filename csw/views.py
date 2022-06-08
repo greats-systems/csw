@@ -10,6 +10,7 @@ from .forms import CswForm
 from .forms import Work_contactForm, educationForm, pst5Form, charfForm, pracForm, privForm, profileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 from django.contrib.auth import authenticate, login, logout
 # from .decorators import unauthenticated_user, allowed_users, admin_only
 
@@ -31,6 +32,7 @@ def register(request):
 
     return render(request, 'users/register.html', {'form': form})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def loginPage(request):
     
 	if request.method == 'POST':
@@ -38,6 +40,7 @@ def loginPage(request):
 		password = request.POST.get('password')
 
 		user = authenticate(request, username=username, password=password)
+        
 
 		if user is not None:
 			login(request, user)
@@ -48,13 +51,14 @@ def loginPage(request):
 	context = {}
 	return render(request, 'users/loginPage.html', context)
 
-
+@login_required()
 def form1(request):
     if request.method == "POST":
         forms = CswForm(request.POST)
         if forms.is_valid():
             forms.save()
             messages.success(request, f'You have successfully added your first form..Please Complete Registration!!!')
+            request.session['forward'] = True
             return redirect('work_contact')
     else:
         forms = CswForm()
@@ -62,13 +66,14 @@ def form1(request):
 
     return render(request, 'users/form1.html', {'forms': forms})
     
-
+@login_required()
 def work_contact(request):
     if request.method == "POST":
         work_forms = Work_contactForm(request.POST)
         if work_forms.is_valid():
             work_forms.save()
             messages.success(request, f'You have successfully added your second form..Please Complete Registration!!!')
+            request.session['forward'] = True
             return redirect('edu')
     else:
         work_forms = Work_contactForm()
@@ -76,7 +81,7 @@ def work_contact(request):
 
     return render(request, 'users/work_contact.html', {'work_forms': work_forms})
     
-
+@login_required()
 def edu(request):
     if request.method == "POST":
         edu_forms  = educationForm(request.POST)
@@ -89,7 +94,8 @@ def edu(request):
         
 
     return render(request, 'users/edu.html', {'edu_forms': edu_forms})
-    
+
+@login_required()    
 def pst5(request):
     if request.method == "POST":
         pst5_forms  = pst5Form(request.POST)
@@ -103,6 +109,7 @@ def pst5(request):
 
     return render(request, 'users/pst5.html', {'pst5_forms': pst5_forms})
 
+@login_required()
 def charf(request):
     if request.method == "POST":
         charf_forms  = charfForm(request.POST)
@@ -116,6 +123,7 @@ def charf(request):
 
     return render(request, 'users/charf.html', {'charf_forms': charf_forms})
 
+@login_required()
 def pract(request):
     if request.method == "POST":
         pract_forms  = pracForm(request.POST)
@@ -129,6 +137,7 @@ def pract(request):
 
     return render(request, 'users/pract.html', {'pract_forms': pract_forms})
 
+@login_required()
 def priv(request):
     if request.method == "POST":
         privt_forms  = privForm(request.POST)
@@ -146,7 +155,7 @@ def priv(request):
     #    privt_forms  = privForm(request.POST)
     #    if privt_forms .is_valid():
     #        privt_forms .save()
-    #        return HttpResponseRedirect('/priv?submitted=true')
+    #        return HttpR•••esponseRedirect('/priv?submitted=true')
     
     # else:
     #    privt_forms = privForm
@@ -154,6 +163,7 @@ def priv(request):
     #        submitted=True
     #    return render(request, 'users/priv.html',{'privt_forms': privt_forms , 'submitted':submitted})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def logout(request):
     return redirect('loginPage')
 
