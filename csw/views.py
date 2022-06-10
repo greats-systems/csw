@@ -1,7 +1,7 @@
-from http.client import HTTPResponse
-from sqlite3 import register_adapter
+from rest_framework import generics
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from .serializers import *
 
 from .models import *
 # from django.contrib.auth.forms import UserCreationForm
@@ -54,7 +54,7 @@ def loginPage(request):
 @login_required()
 def form1(request):
     if request.method == "POST":
-        forms = CswForm(request.POST)
+        forms = CswForm(request.POST, request.FILES,instance=Csw)
         if forms.is_valid():
             forms.save()
             messages.success(request, f'You have successfully added your first form..Please Complete Registration!!!')
@@ -84,7 +84,7 @@ def work_contact(request):
 @login_required()
 def edu(request):
     if request.method == "POST":
-        edu_forms  = educationForm(request.POST)
+        edu_forms  = educationForm(request.POST, request.FILES,instance=education_and_training)
         if edu_forms.is_valid():
             edu_forms.save()
             messages.success(request, f'You have successfully added your third form..Please Complete Registration!!!')
@@ -150,24 +150,12 @@ def priv(request):
         
 
     return render(request, 'users/priv.html', {'privt_forms': privt_forms})
-    # submitted = False
-    # if request.method == "POST":
-    #    privt_forms  = privForm(request.POST)
-    #    if privt_forms .is_valid():
-    #        privt_forms .save()
-    #        return HttpR•••esponseRedirect('/priv?submitted=true')
     
-    # else:
-    #    privt_forms = privForm
-    #    if 'submitted' in request.GET:
-    #        submitted=True
-    #    return render(request, 'users/priv.html',{'privt_forms': privt_forms , 'submitted':submitted})
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def logout(request):
     return redirect('loginPage')
 
-@login_required()
+# @login_required()
 # @allowed_users(allowed_roles=['user'])
 def profile(request):
     customer = request.user.customer
@@ -180,6 +168,141 @@ def profile(request):
             
     context = {'profileforms':profileforms}
     return render(request, 'users/profile.html', context)
+
+# serializer
+class CswList(generics.ListCreateAPIView):
+    serializer_class = CswSerializer
+
+    def get_queryset(self):
+        queryset = Csw.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class CswDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Csw.objects.all()
+    serializer_class = CswSerializer
+
+class Work_contactList(generics.ListCreateAPIView):
+    serializer_class = Work_contactSerializer
+
+    def get_queryset(self):
+        queryset = Work_contact.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class Work_contactDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Work_contact.objects.all()
+    serializer_class = Work_contactSerializer
+
+class CustomerList(generics.ListCreateAPIView):
+    serializer_class = CustomerSerializer
+
+    def get_queryset(self):
+        queryset = Customer.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
     
+class education_and_trainingList(generics.ListCreateAPIView):
+    serializer_class = education_and_trainingSerializer
+
+    def get_queryset(self):
+        queryset = education_and_training.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class education_and_trainingDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = education_and_training.objects.all()
+    serializer_class = education_and_trainingSerializer
+
+class pst_five_workList(generics.ListCreateAPIView):
+    serializer_class = pst_five_workSerializer
+
+    def get_queryset(self):
+        queryset = pst_five_work.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class pst_five_workDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = pst_five_work.objects.all()
+    serializer_class = pst_five_workSerializer
+
+class practise_outsideList(generics.ListCreateAPIView):
+    serializer_class = practise_outsideSerializer
+
+    def get_queryset(self):
+        queryset = practise_outside.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class practise_outsideDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = practise_outside.objects.all()
+    serializer_class = practise_outsideSerializer
+
+class character_refList(generics.ListCreateAPIView):
+    serializer_class = character_refSerializer
+
+    def get_queryset(self):
+        queryset = character_ref.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class character_refDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = character_ref.objects.all()
+    serializer_class = character_refSerializer
+
+class rivate_practiceList(generics.ListCreateAPIView):
+    serializer_class = rivate_practiceSerializer
+
+    def get_queryset(self):
+        queryset = rivate_practice.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class rivate_practiceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = rivate_practice.objects.all()
+    serializer_class = rivate_practiceSerializer
+
+class UserList(generics.ListCreateAPIView):
+    serializer_class = UserRegisterSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        location = self.request.query_params.get('location')
+        if location is not None:
+            queryset = queryset.filter(location=location)
+        return queryset
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegisterSerializer
     
 

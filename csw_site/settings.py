@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_interface',
+    'rest_framework',
     'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'csw.apps.CswConfig',
+    
 ]
 
 MIDDLEWARE = [

@@ -27,7 +27,7 @@ class Csw(models.Model):
      Gender=models.CharField('Gender', max_length=20, choices=CHOICES,null=True)
      house_number = models.CharField('House Number', max_length=70,null=True )
      mobile_number = models.CharField('Mobile Number', max_length=70,null=True )
-     passport_pho = models.ImageField('Passport Photo', upload_to= FilePathField ,blank=True ,null=True )
+     passport_pho = models.ImageField('Passport Photo', default="profile1.png",blank=True ,null=True )
      
 
      def __str__(self):
@@ -50,7 +50,7 @@ class education_and_training(models.Model):
    start_date = models.DateField('Start Date',null=True )
    end_date = models.DateField('End Date',null=True )
    name_of_provider = models.CharField('Name Of Provider', max_length=70,null=True )
-   certificates = models.FileField('Certificates', upload_to=FilePathField ,null=True )
+   certificates = models.FileField('Certificates', blank=False,null=True )
    city = models.CharField('City/Town',null=True ,max_length=70)
    # address = models.CharField('City/Town',null=True ,max_length=200)
    country = models.CharField('Country',null=True ,max_length=70)
