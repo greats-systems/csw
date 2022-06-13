@@ -141,6 +141,12 @@ class Customer(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Person(models.Model):
+    name = models.CharField(max_length=30)
+    email = models.EmailField(blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=200, null=True)
    
 
    

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import ModelForm
-from .models import Csw, Customer, Work_contact, education_and_training, pst_five_work, character_ref, practise_outside, rivate_practice, Customer
+from .models import *
 
 
 class UserRegisterForm(UserCreationForm):
@@ -51,5 +51,10 @@ class profileForm(ModelForm):
         model = Customer
         fields = "__all__"
         exclude = ['user']
+
+class PersonData(forms.Form):
+	class meta:
+		model = Person
+		fields = '__all__'
         
         

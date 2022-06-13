@@ -5,13 +5,16 @@ from .serializers import *
 
 from .models import *
 # from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegisterForm
+from .forms import PersonData, UserRegisterForm
 from .forms import CswForm
 from .forms import Work_contactForm, educationForm, pst5Form, charfForm, pracForm, privForm, profileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import authenticate, login, logout
+from tablib import Dataset
+from django.http import HttpResponse
+from .resources import PersonResource
 # from .decorators import unauthenticated_user, allowed_users, admin_only
 
 
@@ -169,7 +172,35 @@ def profile(request):
     context = {'profileforms':profileforms}
     return render(request, 'users/profile.html', context)
 
-# serializer
+
+def export(request):
+    person_resource = PersonResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+    return response
+
+def input(request): 
+    if request.method == 'POST':
+        person_resource = PersonResource()
+        dataset = Dataset()
+        new_persons = PersonData (request.POST, request.FILES['myfile'],instance=Person)
+
+        imported_data = dataset.load(new_persons.read(),format='xlsx')
+        for data in imported_data:
+            print(data[1])
+            value = Person(
+                data[0],
+                data[1],
+                data[2],
+                data[3]
+            )
+            value.save()
+
+    return render(request, 'users/input.html')
+
+
+#Serializers
 class CswList(generics.ListCreateAPIView):
     serializer_class = CswSerializer
 
