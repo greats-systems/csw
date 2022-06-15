@@ -1,5 +1,5 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin
+# from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 from .models import Csw
@@ -10,7 +10,7 @@ from .models import character_ref
 from .models import practise_outside
 from .models import rivate_practice
 from .models import Customer
-from .models import Person
+# from .models import Person
 
 admin.site.register(Csw)
 admin.site.register(Work_contact)
@@ -20,6 +20,6 @@ admin.site.register(character_ref)
 admin.site.register(practise_outside)
 admin.site.register(rivate_practice)
 admin.site.register(Customer)
-admin.site.register(Person)
-class PersonAdmin(ImportExportModelAdmin):
-    list_display = ('name', 'email', 'location')
+# admin.site.register(Person)
+# class PersonAdmin(ImportExportModelAdmin):
+#     list_display = ('name', 'email', 'location')

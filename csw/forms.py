@@ -52,9 +52,9 @@ class profileForm(ModelForm):
         fields = "__all__"
         exclude = ['user']
 
-class PersonData(forms.Form):
-	class meta:
-		model = Person
-		fields = '__all__'
+# class PersonData(forms.Form):
+# 	class meta:
+# 		model = Person
+# 		fields = '__all__'
         
         

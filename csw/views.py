@@ -5,16 +5,16 @@ from .serializers import *
 
 from .models import *
 # from django.contrib.auth.forms import UserCreationForm
-from .forms import PersonData, UserRegisterForm
+from .forms import UserRegisterForm
 from .forms import CswForm
 from .forms import Work_contactForm, educationForm, pst5Form, charfForm, pracForm, privForm, profileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import authenticate, login, logout
-from tablib import Dataset
+# from tablib import Dataset
 from django.http import HttpResponse
-from .resources import PersonResource
+# from .resources import PersonResource
 # from .decorators import unauthenticated_user, allowed_users, admin_only
 
 
@@ -56,6 +56,7 @@ def loginPage(request):
 
 @login_required()
 def form1(request):
+    forms = CswForm(instance=Csw)
     if request.method == "POST":
         forms = CswForm(request.POST, request.FILES,instance=Csw)
         if forms.is_valid():
@@ -65,8 +66,6 @@ def form1(request):
             return redirect('work_contact')
     else:
         forms = CswForm()
-        
-
     return render(request, 'users/form1.html', {'forms': forms})
     
 @login_required()
@@ -159,7 +158,7 @@ def logout(request):
     return redirect('loginPage')
 
 # @login_required()
-# @allowed_users(allowed_roles=['user'])
+# @allowed_users(allowed_roles=['user']
 def profile(request):
     customer = request.user.customer
     profileforms = profileForm(instance=customer)
@@ -173,35 +172,10 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
-def export(request):
-    person_resource = PersonResource()
-    dataset = person_resource.export()
-    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
-    return response
-
-def input(request): 
-    if request.method == 'POST':
-        person_resource = PersonResource()
-        dataset = Dataset()
-        new_persons = PersonData (request.POST, request.FILES['myfile'],instance=Person)
-
-        imported_data = dataset.load(new_persons.read(),format='xlsx')
-        for data in imported_data:
-            print(data[1])
-            value = Person(
-                data[0],
-                data[1],
-                data[2],
-                data[3]
-            )
-            value.save()
-
-    return render(request, 'users/input.html')
 
 
 #Serializers
-class CswList(generics.ListCreateAPIView):
+class CswList(generics.CreateAPIView):
     serializer_class = CswSerializer
 
     def get_queryset(self):
@@ -216,7 +190,7 @@ class CswDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Csw.objects.all()
     serializer_class = CswSerializer
 
-class Work_contactList(generics.ListCreateAPIView):
+class Work_contactList(generics.CreateAPIView):
     serializer_class = Work_contactSerializer
 
     def get_queryset(self):
@@ -231,7 +205,7 @@ class Work_contactDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Work_contact.objects.all()
     serializer_class = Work_contactSerializer
 
-class CustomerList(generics.ListCreateAPIView):
+class CustomerList(generics.CreateAPIView):
     serializer_class = CustomerSerializer
 
     def get_queryset(self):
@@ -246,7 +220,7 @@ class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     
-class education_and_trainingList(generics.ListCreateAPIView):
+class education_and_trainingList(generics.CreateAPIView):
     serializer_class = education_and_trainingSerializer
 
     def get_queryset(self):
@@ -261,7 +235,7 @@ class education_and_trainingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = education_and_training.objects.all()
     serializer_class = education_and_trainingSerializer
 
-class pst_five_workList(generics.ListCreateAPIView):
+class pst_five_workList(generics.CreateAPIView):
     serializer_class = pst_five_workSerializer
 
     def get_queryset(self):
@@ -276,7 +250,7 @@ class pst_five_workDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = pst_five_work.objects.all()
     serializer_class = pst_five_workSerializer
 
-class practise_outsideList(generics.ListCreateAPIView):
+class practise_outsideList(generics.CreateAPIView):
     serializer_class = practise_outsideSerializer
 
     def get_queryset(self):
@@ -291,7 +265,7 @@ class practise_outsideDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = practise_outside.objects.all()
     serializer_class = practise_outsideSerializer
 
-class character_refList(generics.ListCreateAPIView):
+class character_refList(generics.CreateAPIView):
     serializer_class = character_refSerializer
 
     def get_queryset(self):
@@ -306,7 +280,7 @@ class character_refDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = character_ref.objects.all()
     serializer_class = character_refSerializer
 
-class rivate_practiceList(generics.ListCreateAPIView):
+class rivate_practiceList(generics.CreateAPIView):
     serializer_class = rivate_practiceSerializer
 
     def get_queryset(self):

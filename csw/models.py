@@ -13,7 +13,7 @@ class Csw(models.Model):
         (3, 'Miss'),
         (4, 'Other'),
     )
-     title = models.IntegerField('Title', max_length=20, choices=SUBJECT_CHOICES,null=True)
+     title = models.IntegerField('Title', choices=SUBJECT_CHOICES,null=True)
      first_name = models.CharField('First Name', max_length=50,null=True )
      surname = models.CharField('Surname', max_length=70,null=True )
      date_of_birth = models.DateField('Date of Birth',null=True )
@@ -142,11 +142,11 @@ class Customer(models.Model):
 	def __str__(self):
 		return self.name
 
-class Person(models.Model):
-    name = models.CharField(max_length=30)
-    email = models.EmailField(blank=True)
-    location = models.CharField(max_length=100, blank=True)
-    phone = models.CharField(max_length=200, null=True)
+# class Person(models.Model):
+#     name = models.CharField(max_length=30)
+#     email = models.EmailField(blank=True)
+#     location = models.CharField(max_length=100, blank=True)
+#     phone = models.CharField(max_length=200, null=True)
    
 
    

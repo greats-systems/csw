@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'csw.apps.CswConfig',
-    'import_export',
-    
+    # 'import_export',
 ]
 
 MIDDLEWARE = [
