@@ -19,7 +19,6 @@ urlpatterns = [
     path('charf/', views.charf, name='charf'),
     path('pract/', views.pract, name='pract'),
     path('priv/', views.priv, name='priv'),
-    # path('input/', views.input, name='input'),
     # serializers
     path('Csw/', CswList.as_view()),
     path('Csw/', CswDetail.as_view()),
@@ -39,5 +38,5 @@ urlpatterns = [
     path('rivate_practice/', rivate_practiceDetail.as_view()),
     path('User/', UserList.as_view()),
     path('User/', UserDetail.as_view()),
-      
+   
 ]

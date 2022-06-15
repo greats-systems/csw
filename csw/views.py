@@ -1,10 +1,11 @@
 from rest_framework import generics
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from .serializers import *
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .models import *
-# from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 from .forms import CswForm
 from .forms import Work_contactForm, educationForm, pst5Form, charfForm, pracForm, privForm, profileForm
@@ -12,10 +13,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import authenticate, login, logout
-# from tablib import Dataset
 from django.http import HttpResponse
-# from .resources import PersonResource
-# from .decorators import unauthenticated_user, allowed_users, admin_only
+
 
 
 def home(request):
@@ -295,7 +294,7 @@ class rivate_practiceDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = rivate_practice.objects.all()
     serializer_class = rivate_practiceSerializer
 
-class UserList(generics.ListCreateAPIView):
+class UserList(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     def get_queryset(self):
@@ -309,5 +308,25 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
+
+# class UserViewList(generics.CreateAPIView):
+#     serializer_class = UserRegisterSerializer
+
+#     def get_queryset(self):
+#         queryset = User.objects.all('id', 'username', 'password')
+#         location = self.request.query_params.get('location')
+#         if location is not None:
+#             queryset = queryset.filter(location=location)
+#         return queryset
+
+
+# class UserViewDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserRegisterSerializer
+
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
     
 

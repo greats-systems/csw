@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Csw, Customer, Work_contact, education_and_training, pst_five_work, character_ref, practise_outside, rivate_practice
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 class CswSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,6 +46,17 @@ class rivate_practiceSerializer(serializers.ModelSerializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username','email',  'password1', 'password2']
+        fields = ['username','email',  'password']
+
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', 'password']
+#         extra_kwargs = {'password': {'write_only': True, 'required': True}}
+
+#     def create(self, validated_data):
+#         user = User.objects.create_user(**validated_data)
+#         Token.objects.create(user=user)
+#         return user
 
 
